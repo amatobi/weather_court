@@ -1,3 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../utils/converters.dart';
@@ -184,4 +187,31 @@ class Weather {
         return WeatherIcons.clearDay;
     }
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'time': time,
+      'sunrise': sunrise,
+      'sunset': sunset,
+      'humidity': humidity,
+      'description': description,
+      'iconCode': iconCode,
+      'main': main,
+      'cityName': cityName,
+      'windSpeed': windSpeed,
+      'temperature': temperature?.kelvin,
+      'maxTemperature': maxTemperature?.kelvin,
+      'minTemperature': minTemperature?.kelvin,
+     
+    };
+  }
+  
+ static Weather fromHive(Map<String, dynamic> json){
+  return Weather(
+    
+  );
+
+ }
+ 
 }

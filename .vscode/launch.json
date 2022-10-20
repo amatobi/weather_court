@@ -4,10 +4,20 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        
+        // {
+        //     "name": "weathercourt",
+        //     "request": "launch",
+        //     "type": "dart"
+        // },
         {
             "name": "weathercourt",
+            "program": "lib/main_dev.dart",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            // "args": [
+            //     "--flavor",
+            // ]
         },
         {
             "name": "weathercourt (profile mode)",
@@ -20,6 +30,15 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
+        },
+        {
+            "name": "weathercourt",
+            "program": "lib/main_dev.dart",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--flavor",
+            ]
         }
     ]
 }
