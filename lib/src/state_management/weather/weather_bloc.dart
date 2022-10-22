@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:weathercourt/helper/weather_helper.dart';
+import 'package:weathercourt/src/helper/weather_helper.dart';
 
 import '../../models/weather.dart';
 import '../../utils/errors.dart';

@@ -1,4 +1,5 @@
 import 'package:flutter/Material.dart';
+import 'package:weathercourt/src/config/app_config.dart';
 
 import 'src/theme/theme.dart';
 import 'src/ui/screens/splash_screen.dart';
@@ -10,7 +11,7 @@ class MaterialInit extends StatelessWidget {
   Widget build(BuildContext context) {
   
    return MaterialApp(
-      title: 'Weather Court',
+      title: AppConfig.of(context)!.appName,
       debugShowCheckedModeBanner: false,
       theme: lightTheme(context),    
 

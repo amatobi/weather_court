@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:weathercourt/src/data/static/cities_data.dart';
-import 'package:weathercourt/src/state_management/weather/weather_bloc.dart';
-import 'package:weathercourt/src/ui/widgets/animations/tick_animation.dart';
-import 'package:weathercourt/src/ui/widgets/shared/components.dart';
+import 'package:weathercourt/src/state_management/local_weather_b/local_weather_bloc.dart';
+import '../../config/constants.dart';
 
+import '../../helper/onboard.dart';
 import '../../state_management/internet_connectivity/internet_connectivity_cubit.dart';
+import '../../state_management/temperature_unit/temperature_unit_cubit.dart';
+import '../widgets/animations/tick_animation.dart';
+import '../widgets/shared/components.dart';
 import '../widgets/shared/custom_page_route.dart';
 import 'home_screen.dart';
 
@@ -18,19 +20,11 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final getIt = GetIt.instance;
-  final lagos = cities.first;
 
   @override
   void initState() {
-    getIt.get<InternetConnectionCubit>().checkConnection();
+    initialize();
 
-    getIt.get<WeatherBloc>().add(
-          WeatherEvent.onFetch(
-            lagos['city'],
-            double.parse(lagos['lng']),
-            double.parse(lagos['lat']),
-          ),
-        );
     Future.delayed(const Duration(seconds: 5), () {
       Navigator.pushAndRemoveUntil(
           context,
@@ -40,6 +34,15 @@ class _SplashScreenState extends State<SplashScreen> {
           (route) => false);
     });
     super.initState();
+  }
+
+  initialize() {
+    getIt.get<InternetConnectionCubit>().checkConnection();
+
+    getIt.get<Onboard>().setup();
+    getIt.get<TemperatureUnitCubit>().getTemperatureUnit();
+
+    getIt.get<LocalWeatherBloc>().add(FetchLocalWeather());
   }
 
   @override
@@ -55,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: AssetImage('assets/images/splash_background.jpg'),
+            image: AssetImage(Constants.splashBackground),
           ),
         ),
         child: Scaffold(

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:weathercourt/src/theme/colors.dart';
+import 'package:weathercourt/src/ui/widgets/shared/glass_morphism.dart';
 
 Widget logo(Size size) {
   return Text(
@@ -16,5 +21,135 @@ Widget logo(Size size) {
             offset: const Offset(0, 4))
       ],
     ),
+  );
+}
+
+Widget glassIconButton({
+  required double radius,
+  required String assetName,
+  double? iconHeight,
+   double? width, 
+  Function()? onTap,
+}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: SizedBox(
+      height: width,
+      width: width,
+      child: GlassMorphism(
+        blur: 2,
+        opacity: 0.3,
+        radius: radius,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SvgPicture.asset(
+            assetName,
+            height: iconHeight,
+            color: white,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+errorToast(String msg) {
+  Fluttertoast.showToast(
+    msg: msg,
+    backgroundColor: Colors.red,
+  );
+}
+
+customDialog({
+  required BuildContext context,
+  Color color = white,
+  Widget? title,
+  double height = 150,
+  List<Widget> children = const <Widget>[],
+}) {
+  return showDialog(
+    context: context,
+    builder: (ctx) {
+      return Dialog(
+        backgroundColor: color,
+        child: Container(
+          height: height,
+          padding:
+              const EdgeInsets.only(top: 10, bottom: 10, right: 20, left: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+                child: title,
+              ),
+              ...children,
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+locationDeniedDialog({required BuildContext context, required String message}) {
+  customDialog(
+    color: white,
+    context: context,
+    height: 140,
+    title: Text(
+      message,
+      style: const TextStyle(
+        color: black,
+      ),
+    ),
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Ink(
+            width: 80,
+            height: 30,
+            child: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Center(
+                  child: Text(
+                'Not now',
+                style: TextStyle(
+                  color: black,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Ink(
+            width: 80,
+            height: 30,
+            child: InkWell(
+              onTap: () async {
+                Navigator.pop(context);
+
+                await Geolocator.openLocationSettings();
+              },
+              child: const Center(
+                child: Text(
+                  'Settings',
+                  style: TextStyle(
+                    color: black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      )
+    ],
   );
 }

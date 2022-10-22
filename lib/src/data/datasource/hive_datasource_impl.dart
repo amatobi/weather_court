@@ -1,38 +1,42 @@
-
+import 'dart:convert';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:weathercourt/src/data/datasource/datasource_contract.dart';
 import 'package:weathercourt/src/models/weather.dart';
 
-class HiveDatasource implements IDatasource {
-  final BoxCollection collection;
-  const HiveDatasource(this.collection);
+class HiveDatasource implements IDatasource {  
+  final Box<Weather> _box;
+  const HiveDatasource( this._box);
   @override
   Future addWeatherData(Weather weather) async {
-    final weatherBox = await collection.openBox('weather');
-    weatherBox.put(weather.id.toString(), weather.toMap());
+    _box.put(weather.id.toString(), weather);
+  }
+  @override
+  Future<void> updateWeatherData(Weather weather) async {
+    final boxtoEdit =
+        _box.values.firstWhere((element) => element.id == weather.id);
+    final index = boxtoEdit.key;
+    _box.putAt(index, weather);
   }
 
   @override
   Future<List<Weather>> fetchWeatherData() async {
-    final weatherBox = await collection.openBox('weather');
+    final result = _box.values.toList();
 
-    final values = await weatherBox.getAllValues();
-
-    final result = values.values.toList();
-
-    final output = result.map((e) => Weather.fromJson(e)).toList();
-    return output;
+    return result;
   }
 
   @override
-  Future<Weather?> findSingleWeatherData(int weatherId) async {
-    final weatherBox = await collection.openBox('weather');
-    final item = await weatherBox.get(weatherId.toString());
-    // final output = jsonEncode(item);
+  Future<Weather?> findSingleWeatherData(Weather weather) async {
+    final item = _box.get(weather.key);
 
     if (item == null) return null;
 
-    return Weather.fromJson(item);
+    return item;
+  }
+
+  @override
+  Future<void> deleteSingleWeatherData(Weather weather) async {
+    _box.delete(weather.key);
   }
 }

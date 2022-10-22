@@ -1,10 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
+
 
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../utils/converters.dart';
 import '../utils/weather_icons.dart';
+
+part 'weather.g.dart';
 
 enum WeatherType {
   clearDay,
@@ -25,16 +28,25 @@ enum WeatherType {
   mistNight,
 }
 
-class Weather {
+@HiveType(typeId: 1)
+class Weather extends HiveObject {
+  @HiveField(0)
   int? id;
+   @HiveField(1)
   int? time;
+   @HiveField(2)
   int? sunrise;
+   @HiveField(3)
   int? sunset;
+   @HiveField(4)
   int? humidity;
-
+   @HiveField(5)
   String? description;
+   @HiveField(6)
   String? iconCode;
+   @HiveField(7)
   String? main;
+   @HiveField(8)
   String? cityName;
 
   double? windSpeed;
@@ -203,15 +215,25 @@ class Weather {
       'temperature': temperature?.kelvin,
       'maxTemperature': maxTemperature?.kelvin,
       'minTemperature': minTemperature?.kelvin,
-     
     };
   }
-  
- static Weather fromHive(Map<String, dynamic> json){
-  return Weather(
-    
-  );
 
- }
- 
+  static Weather fromHive(Map<String, dynamic> hive) {
+    return Weather(
+      id: hive['id'],
+      time: hive['time'],
+      sunrise: hive['sunrise'],
+      sunset: hive['sunset'],
+      humidity: hive['humidity'],
+      description: hive['description'],
+      iconCode: hive['iconCode'],
+      main: hive['main'],
+      cityName: hive['cityName'],
+      windSpeed: hive['windSpeed'],
+      temperature: Temperature(hive['temperature']),
+      maxTemperature: Temperature(hive['maxTemperature']),
+      minTemperature: Temperature(hive['minTemperature']),
+      //forecast:  List<Weather>.from(hive['forecast']), 
+    );
+  }
 }
