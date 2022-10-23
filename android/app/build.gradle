@@ -42,6 +42,8 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+    
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.weathercourt.app.weathercourt"
@@ -51,6 +53,20 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+    }
+
+    flavorDimensions "weathercourt"
+    productFlavors {
+        dev {
+            dimension "weathercourt"
+            applicationIdSuffix ".dev"
+            versionNameSuffix ".dev"
+        }
+        prod {
+            dimension "weathercourt"
+            applicationIdSuffix ".prod"
+            versionNameSuffix ".prod"
+        }
     }
 
     buildTypes {
