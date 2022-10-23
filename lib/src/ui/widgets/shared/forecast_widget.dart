@@ -5,7 +5,6 @@ import 'package:weathercourt/src/ui/widgets/shared/error_internet.dart';
 import 'package:weathercourt/src/ui/widgets/shared/forecast_line.dart';
 
 import '../../../models/weather.dart';
-import '../../../theme/colors.dart';
 
 class ForecastWidget extends StatelessWidget {
   final List<Weather> weathers;
