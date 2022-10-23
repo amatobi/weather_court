@@ -28,8 +28,4 @@ class WeatherCourt extends StatelessWidget {
   }
 }
 
-List ofItem = [];
 
-of() {
-  ofItem.toSet();
-}
