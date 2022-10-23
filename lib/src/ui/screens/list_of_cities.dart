@@ -8,7 +8,7 @@ import 'package:weathercourt/src/config/constants.dart';
 import 'package:weathercourt/src/state_management/weather/weather_bloc.dart';
 import 'package:weathercourt/src/ui/widgets/shared/components.dart';
 import '../../helper/city_helper.dart';
-import '../../state_management/local_weather_b/local_weather_bloc.dart';
+import '../../state_management/local_weather/local_weather_bloc.dart';
 import '../../theme/colors.dart';
 import '../../utils/constants.dart';
 import '../../utils/time_utils.dart';
@@ -42,14 +42,14 @@ class AllCities extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: size.height * 0.05),
+                    //SizedBox(height: size.height * 0.05),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         backButton(context),
                       ],
                     ),
-                    SizedBox(height: size.height * 0.05),
+                    SizedBox(height: size.height * 0.01),
                     //watch list
                     BlocBuilder<LocalWeatherBloc, LocalWeatherState>(
                       builder: (context, state) {

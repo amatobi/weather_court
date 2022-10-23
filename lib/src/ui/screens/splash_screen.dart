@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:weathercourt/src/state_management/local_weather_b/local_weather_bloc.dart';
+import 'package:weathercourt/src/state_management/local_weather/local_weather_bloc.dart';
 import '../../config/constants.dart';
 
 import '../../helper/onboard.dart';
@@ -44,6 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
+  
   navigate(Widget child) {
     Navigator.pushAndRemoveUntil(
         context,

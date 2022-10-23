@@ -30,15 +30,15 @@ class ValueTile extends StatelessWidget {
             ? Icon(
                 iconData,
                 color: iconColor,
-                size: 20,
+                size: size.width * 0.10,
               )
             : const SizedBox.shrink(),
-        const SizedBox(
-          height: 10,
+         SizedBox(
+          height: size.width * 0.04,
         ),
         Text(
           value,
-          style: const TextStyle(color: Colors.white),
+          style:  TextStyle(color: textColor?? Colors.white),
         ),
       ],
     );

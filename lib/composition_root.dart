@@ -15,10 +15,11 @@ import 'src/cache/local_cache_impl.dart';
 import 'src/data/datasource/datasource_contract.dart';
 import 'src/data/datasource/hive_datasource_impl.dart';
 import 'src/state_management/internet_connectivity/internet_connectivity_cubit.dart';
-import 'src/state_management/local_weather_b/local_weather_bloc.dart';
+import 'src/state_management/loading_location/loading_location_cubit.dart';
+import 'src/state_management/local_weather/local_weather_bloc.dart';
+import 'src/state_management/selected_item/selected_item_cubit.dart';
 import 'src/state_management/temperature_unit/temperature_unit_cubit.dart';
 import 'src/state_management/weather/weather_bloc.dart';
-import 'src/state_management/weather_forecast/weather_forecast_cubit.dart';
 import 'src/utils/converters.dart';
 import 'src/viewmodel/weather_viewmodel.dart';
 
@@ -54,7 +55,8 @@ class CompositionRoot {
         BlocProvider.value(value: GetIt.I<LocalWeatherBloc>()),
         BlocProvider.value(value: GetIt.I<TemperatureUnitCubit>()),
         BlocProvider.value(value: GetIt.I<InternetConnectionCubit>()),
-        BlocProvider.value(value: GetIt.I<WeatherForecastCubit>()),
+        BlocProvider.value(value: GetIt.I<SelectedItemCubit>()), 
+        BlocProvider.value(value: GetIt.I<LoadingLocationCubit>())
       ],
       child: const MaterialInit(),
     );

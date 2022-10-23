@@ -23,9 +23,9 @@ class HiveDatasource implements IDatasource {
     final boxtoEdit =
         _box.values.firstWhere((element) => element.cityName == weather.cityName);
     final index = boxtoEdit.key;
-    
+  
    
-    _box.putAt(index, weather);
+    _box.put(index, weather);
   }
 
   @override

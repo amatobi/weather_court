@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:weathercourt/src/utils/time_utils.dart';
 
 String timeOfDayBackgroundAsset(TimeOfTheDay timeOfTheDay) {
@@ -12,6 +13,20 @@ String timeOfDayBackgroundAsset(TimeOfTheDay timeOfTheDay) {
     default:
       return 'assets/images/morning_background.jpg';
   }
+}
+IconData greetingIcon(TimeOfTheDay timeOfTheDay){
+  switch (timeOfTheDay) {
+    case TimeOfTheDay.morning:
+      return Icons.light_mode;
+    case TimeOfTheDay.afternoon:
+       return Icons.light_mode;
+    case TimeOfTheDay.evening:
+      return Icons.nights_stay;
+
+    default:
+      return Icons.light_mode;
+  }
+
 }
 
 String greeting(TimeOfTheDay timeOfTheDay) {

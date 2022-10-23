@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weathercourt/src/config/constants.dart';
+import 'package:weathercourt/src/helper/weather_helper.dart';
 import 'package:weathercourt/src/models/weather.dart';
 import 'package:weathercourt/src/state_management/internet_connectivity/internet_connectivity_cubit.dart';
 
@@ -20,12 +21,13 @@ class Onboard {
   bool isNewUser() => pref.getBool(Constants.prefKeyIsNew) ?? true;
 
   Future<void> setup(Function(bool) callback) async {
+    final weatherHelper = WeatherHelper(weatherservice: weatherService);
     List<Weather> weathers = [];
 
     final state = getIt.get<InternetConnectionCubit>().state;
     if (state is Connected) {
       for (City city in CityHelper.defaultCities()) {
-        final weather = await weatherService.getWeatherData(city.cityName!);
+        final weather = await weatherHelper.getWeather(city.cityName);
         weathers.add(weather);
       }
       viewModel.addMultipleWeather(weathers).then((value) {});

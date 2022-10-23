@@ -40,6 +40,7 @@ Widget glassIconButton({
   required double radius,
   required String assetName,
   double? iconHeight,
+  Widget? child, 
   double? width,
   Function()? onTap,
 }) {
@@ -54,7 +55,7 @@ Widget glassIconButton({
         radius: radius,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: SvgPicture.asset(
+          child: child??  SvgPicture.asset(
             assetName,
             height: iconHeight,
             color: white,

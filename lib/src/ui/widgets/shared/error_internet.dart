@@ -9,9 +9,9 @@ class ErrorInternent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    final size = MediaQuery.of(context).size;
     return Column(children: [
-      LottieBuilder.asset('assets/lottie/no_connectivity.json', height: 150,),
+      LottieBuilder.asset('assets/lottie/bad_network.json', height: size.width * 0.2,),
        Text( message?? 'You need internet connection to view this feature',
         textAlign: TextAlign.center,
           style: const TextStyle(

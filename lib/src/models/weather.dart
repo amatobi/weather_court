@@ -56,7 +56,7 @@ class Weather extends HiveObject {
   Temperature? maxTemperature;
    @HiveField(12)
   Temperature? minTemperature;
-
+  @HiveField(13)
   List<Weather>? forecast;
 
   Weather(

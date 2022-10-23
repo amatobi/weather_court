@@ -5,6 +5,8 @@ import 'package:weathercourt/src/ui/widgets/shared/weather_condition.dart';
 
 import '../../../models/weather.dart';
 
+
+
 class WeatherWidget extends StatelessWidget {
   final Weather? weather;
 
@@ -16,6 +18,7 @@ class WeatherWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
+              
           Text(
             weather!.cityName!.toUpperCase(),
             style: const TextStyle(

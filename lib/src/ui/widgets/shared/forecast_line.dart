@@ -13,30 +13,35 @@ class ForecastLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final getIt = GetIt.I;
-    return ListView.separated(
-      scrollDirection: Axis.horizontal,
-      shrinkWrap: true,
-      itemCount: weathers.length,
-      separatorBuilder: (context, index) => const Divider(
-        height: 100,
-        color: black,
+    return SizedBox(
+      width: size.width,
+      height: size.width * 0.487, 
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        itemCount: weathers.length,
+        separatorBuilder: (context, index) => const Divider(
+          height: 100,
+          color: black,
+        ),
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        itemBuilder: (context, index) {
+          final item = weathers[index];
+          return Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child: Center(
+                child: ValueTile(
+              DateFormat('E, ha')
+                  .format(DateTime.fromMillisecondsSinceEpoch(item.time! * 1000)),
+              '${item.temperature!.as(getIt.get<TemperatureUnitCubit>().state).round()}°',
+              textColor: black,
+              iconData: item.getIconData(),
+            )),
+          );
+        },
       ),
-      padding: const EdgeInsets.only(left: 10, right: 10),
-      itemBuilder: (context, index) {
-        final item = weathers[index];
-        return Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10),
-          child: Center(
-              child: ValueTile(
-            DateFormat('E, ha')
-                .format(DateTime.fromMillisecondsSinceEpoch(item.time! * 1000)),
-            '${item.temperature!.as(getIt.get<TemperatureUnitCubit>().state).round()}°',
-            textColor: black,
-            iconData: item.getIconData(),
-          )),
-        );
-      },
     );
   }
 }

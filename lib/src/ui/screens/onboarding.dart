@@ -8,7 +8,7 @@ import 'package:weathercourt/src/ui/widgets/shared/components.dart';
 import 'package:weathercourt/src/ui/widgets/shared/error_internet.dart';
 import '../../config/constants.dart';
 import '../../helper/onboard.dart';
-import '../../state_management/local_weather_b/local_weather_bloc.dart';
+import '../../state_management/local_weather/local_weather_bloc.dart';
 import '../widgets/shared/custom_page_route.dart';
 import 'home_screen.dart';
 
