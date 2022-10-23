@@ -26,13 +26,17 @@ class WeatherAdapter extends TypeAdapter<Weather> {
       iconCode: fields[6] as String?,
       main: fields[7] as String?,
       cityName: fields[8] as String?,
+      windSpeed: fields[9] as double?,
+      temperature: fields[10] as Temperature?,
+      maxTemperature: fields[11] as Temperature?,
+      minTemperature: fields[12] as Temperature?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Weather obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -50,7 +54,15 @@ class WeatherAdapter extends TypeAdapter<Weather> {
       ..writeByte(7)
       ..write(obj.main)
       ..writeByte(8)
-      ..write(obj.cityName);
+      ..write(obj.cityName)
+      ..writeByte(9)
+      ..write(obj.windSpeed)
+      ..writeByte(10)
+      ..write(obj.temperature)
+      ..writeByte(11)
+      ..write(obj.maxTemperature)
+      ..writeByte(12)
+      ..write(obj.minTemperature);
   }
 
   @override

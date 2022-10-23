@@ -4,14 +4,17 @@ import 'package:lottie/lottie.dart';
 import '../../../theme/colors.dart';
 
 class ErrorInternent extends StatelessWidget {
-  const ErrorInternent({super.key});
+   final String? message;
+  const ErrorInternent({super.key, this.message});
 
   @override
   Widget build(BuildContext context) {
+
     return Column(children: [
-      LottieBuilder.asset('assets/lottie/no_connectivity.json'),
-      const Text('You need internet to access all features',
-          style: TextStyle(
+      LottieBuilder.asset('assets/lottie/no_connectivity.json', height: 150,),
+       Text( message?? 'You need internet connection to view this feature',
+        textAlign: TextAlign.center,
+          style: const TextStyle(
               color: black, fontWeight: FontWeight.bold, fontSize: 18)),
     ]);
   }

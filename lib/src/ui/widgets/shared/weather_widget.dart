@@ -4,7 +4,6 @@ import 'package:weathercourt/src/ui/widgets/shared/value_tile.dart';
 import 'package:weathercourt/src/ui/widgets/shared/weather_condition.dart';
 
 import '../../../models/weather.dart';
-import 'forecast_widget.dart';
 
 class WeatherWidget extends StatelessWidget {
   final Weather? weather;

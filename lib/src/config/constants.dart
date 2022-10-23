@@ -12,7 +12,7 @@ class Constants {
      //asset images 
        static const locationIcon = 'assets/icons/location.svg'; 
          static const addWeatherIcon = 'assets/icons/add_weather.svg'; 
-           static const deleteIcon = 'assets/icons/delete';
+           static const deleteIcon = 'assets/icons/delete.svg';
            static const splashBackground = 'assets/images/splash_background.jpg';
 
 }

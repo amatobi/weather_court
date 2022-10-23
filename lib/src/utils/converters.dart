@@ -1,3 +1,6 @@
+import 'package:hive_flutter/hive_flutter.dart';
+ part 'converters.g.dart';
+
 /// converts values of type int to double
 /// intended to use while parsing json values where type will be dynamic
 /// returns value of type double
@@ -10,14 +13,19 @@ intToDouble(dynamic val) {
     throw Exception("value is not of type 'int' or 'double' got type '${val.runtimeType}'");
   }
 }
-
+@HiveType(typeId: 3)
 enum TemperatureUnit {
+   @HiveField(0)
   kelvin,
+   @HiveField(1)
   celsius,
+   @HiveField(2)
+
   fahrenheit
 }
-
-class Temperature{
+@HiveType(typeId: 2)
+class Temperature extends HiveObject {
+  @HiveField(0)
   final double _kelvin;
 
   Temperature(this._kelvin);

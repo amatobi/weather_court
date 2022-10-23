@@ -13,7 +13,6 @@ class WeatherHelper {
     Weather weather = await weatherservice.getWeatherData(cityName);
     List<Weather> weathers = await weatherservice.getForecast(cityName);
     weather.forecast = weathers;
-    print('ALL FORCAST ${weather.forecast!.length}');
     return weather;
   }
 

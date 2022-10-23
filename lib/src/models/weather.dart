@@ -48,11 +48,13 @@ class Weather extends HiveObject {
   String? main;
    @HiveField(8)
   String? cityName;
-
+   @HiveField(9)
   double? windSpeed;
-
+   @HiveField(10)
   Temperature? temperature;
+   @HiveField(11)
   Temperature? maxTemperature;
+   @HiveField(12)
   Temperature? minTemperature;
 
   List<Weather>? forecast;
@@ -72,6 +74,10 @@ class Weather extends HiveObject {
       this.maxTemperature,
       this.minTemperature,
       this.forecast});
+
+      factory Weather.empty(){
+        return Weather();
+      }
 
   static Weather fromJson(Map<String, dynamic> json) {
     final weather = json['weather'][0];

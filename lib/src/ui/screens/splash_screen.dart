@@ -10,6 +10,7 @@ import '../widgets/animations/tick_animation.dart';
 import '../widgets/shared/components.dart';
 import '../widgets/shared/custom_page_route.dart';
 import 'home_screen.dart';
+import 'onboarding.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -25,24 +26,31 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     initialize();
 
-    Future.delayed(const Duration(seconds: 5), () {
-      Navigator.pushAndRemoveUntil(
-          context,
-          CustomPageRoute(
-            child: const HomeScreen(),
-          ),
-          (route) => false);
-    });
     super.initState();
   }
 
-  initialize() {
-    getIt.get<InternetConnectionCubit>().checkConnection();
+  initialize() async {
+    getIt.get<InternetConnectionCubit>().checkConnection();   
 
-    getIt.get<Onboard>().setup();
-    getIt.get<TemperatureUnitCubit>().getTemperatureUnit();
+    Future.delayed(const Duration(seconds: 5), () {
+       if (getIt.get<Onboard>().isNewUser()) {
+      navigate(const Onboarding());
+    } else {
+      navigate(const HomeScreen());
+      getIt.get<TemperatureUnitCubit>().getTemperatureUnit();
 
-    getIt.get<LocalWeatherBloc>().add(FetchLocalWeather());
+      getIt.get<LocalWeatherBloc>().add(FetchLocalWeather());
+    }
+    });
+  }
+
+  navigate(Widget child) {
+    Navigator.pushAndRemoveUntil(
+        context,
+        CustomPageRoute(
+          child: child,
+        ),
+        (route) => false);
   }
 
   @override

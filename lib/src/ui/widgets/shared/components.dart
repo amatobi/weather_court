@@ -24,11 +24,23 @@ Widget logo(Size size) {
   );
 }
 
+Widget backButton(BuildContext context) {
+  return IconButton(
+    onPressed: () {
+      Navigator.pop(context);
+    },
+    icon: const Icon(
+      Icons.keyboard_arrow_left_outlined,
+      color: white,
+    ),
+  );
+}
+
 Widget glassIconButton({
   required double radius,
   required String assetName,
   double? iconHeight,
-   double? width, 
+  double? width,
   Function()? onTap,
 }) {
   return GestureDetector(
@@ -59,6 +71,12 @@ errorToast(String msg) {
     backgroundColor: Colors.red,
   );
 }
+messageToast(String msg) {
+  Fluttertoast.showToast(
+    msg: msg,
+  toastLength: Toast.LENGTH_LONG, 
+  );
+}
 
 customDialog({
   required BuildContext context,
@@ -84,6 +102,36 @@ customDialog({
                 child: title,
               ),
               ...children,
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+loadingDialog({
+  required BuildContext context,
+  Widget? title,
+  double height = 150,
+}) {
+  return showDialog(
+    context: context,
+    builder: (ctx) {
+      return Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          height: height,
+          padding:
+              const EdgeInsets.only(top: 10, bottom: 10, right: 20, left: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+                child: title,
+              ),
+              circularProgress(60, 2),
             ],
           ),
         ),
@@ -151,5 +199,78 @@ locationDeniedDialog({required BuildContext context, required String message}) {
         ],
       )
     ],
+  );
+}
+
+confirmationDialog({
+  required BuildContext context,
+  required String message,
+  required Function() onConfirm,
+}) {
+  customDialog(
+    color: white,
+    context: context,
+    height: 140,
+    title: Text(
+      message,
+      style: const TextStyle(
+        color: black,
+      ),
+    ),
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Ink(
+            width: 80,
+            height: 30,
+            child: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Center(
+                  child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: black,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Ink(
+            width: 80,
+            height: 30,
+            child: InkWell(
+              onTap: onConfirm,
+              child: const Center(
+                child: Text(
+                  'Confirm',
+                  style: TextStyle(
+                    color: black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      )
+    ],
+  );
+}
+
+Widget circularProgress(double size, double strokeWidth) {
+  return SizedBox(
+    height: size,
+    width: size,
+    child: CircularProgressIndicator(
+      color: primary,
+      strokeWidth: strokeWidth,
+    ),
   );
 }

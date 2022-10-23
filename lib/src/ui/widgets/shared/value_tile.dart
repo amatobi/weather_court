@@ -6,8 +6,9 @@ class ValueTile extends StatelessWidget {
   final String label;
   final String value;
   final IconData? iconData;
+  final Color? textColor;
 
-  const ValueTile(this.label, this.value, {super.key, this.iconData});
+  const ValueTile(this.label, this.value, {super.key, this.iconData, this.textColor});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class ValueTile extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            color: Theme.of(context).cardColor,
+            color: textColor?? white,
           ),
         ),
         SizedBox(

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:weathercourt/src/state_management/internet_connectivity/internet_connectivity_cubit.dart';
 import 'package:weathercourt/src/state_management/local_weather_b/local_weather_bloc.dart';
+import 'package:weathercourt/src/theme/colors.dart';
 import 'package:weathercourt/src/ui/widgets/shared/forecast_widget.dart';
+import 'package:weathercourt/src/ui/widgets/shared/glass_morphism.dart';
 
 import '../../helper/geolocator_helper.dart';
 import '../../state_management/weather/weather_bloc.dart';
@@ -16,7 +17,6 @@ import '../../utils/constants.dart';
 import '../../utils/time_utils.dart';
 
 import '../../config/constants.dart';
-import '../../models/weather.dart';
 import '../widgets/shared/custom_page_route.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,12 +30,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final getIt = GetIt.instance;
   late final LocalWeatherBloc _localWeatherBloc;
   final pageController = PageController();
-  Weather? selectedWeather;
-  final weatherBox = Hive.box('weather');
+  int selectedWeather = 0;
 
   @override
   void initState() {
-    _localWeatherBloc = getIt.get<LocalWeatherBloc>();
+    _localWeatherBloc = getIt.get<LocalWeatherBloc>()..add(FetchLocalWeather());
     _updateOnWeatherLoaded();
 
     super.initState();
@@ -52,10 +51,23 @@ class _HomeScreenState extends State<HomeScreen> {
     getIt.get<WeatherBloc>().stream.listen((state) {
       if (state is WeatherLoaded) {
         _localWeatherBloc.add(AddLocalWeather(state.weather));
+        getIt.get<WeatherForecastCubit>().getForecast(state.weather.cityName!);
+        navigate(const HomeScreen());
       } else if (state is WeatherError) {
         errorToast('Could not get weather, please try again later');
+      } else if (state is WeatherLoading) {
+        loadingDialog(context: context);
       }
     });
+  }
+
+  navigate(Widget child) {
+    Navigator.pushAndRemoveUntil(
+        context,
+        CustomPageRoute(
+          child: child,
+        ),
+        (route) => false);
   }
 
   @override
@@ -105,7 +117,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             iconHeight: size.width * 0.1,
                             width: size.width * 0.13,
                             onTap: () {
-                              _fecchWeatherWithLocation();
+                              confirmationDialog(
+                                context: context,
+                                message:
+                                    'Your current location will be fetched, and updated to your watch list?',
+                                onConfirm: () {
+                                  _fetchWeatherWithLocation();
+                                  Navigator.pop(context);
+                                },
+                              );
                             }),
                         SizedBox(width: size.width * 0.02),
                         glassIconButton(
@@ -127,7 +147,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context, state) {
                   if (state is LocalWeatherFetched) {
                     final items = state.weathers;
-
+                    if (items.isEmpty) {
+                      return Center(
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                navigate(AllCities());
+                              },
+                              child: SizedBox(
+                                width: size.width * 0.25,
+                                height: size.width * 0.1,
+                                child: const GlassMorphism(
+                                  blur: 2,
+                                  opacity: 1,
+                                  radius: 20,
+                                  child: Center(
+                                    child: Text(
+                                      'Add city',
+                                      style: TextStyle(
+                                          color: white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }
                     return Column(
                       children: [
                         Row(
@@ -139,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: size.width * 0.025,
                               height: size.width * 0.025,
                               decoration: BoxDecoration(
-                                  color: e == selectedWeather
+                                  color: e.key == selectedWeather
                                       ? Colors.white
                                       : Colors.black.withOpacity(0.4),
                                   borderRadius: BorderRadius.circular(50)),
@@ -157,8 +206,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemCount: items.length,
                             onPageChanged: (v) {
                               setState(() {
-                                selectedWeather = items[v];
+                                selectedWeather = items[v].key;
                               });
+
                               final internetState =
                                   getIt.get<InternetConnectionCubit>().state;
                               if (internetState is Connected) {
@@ -173,15 +223,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               context,
                               i,
                             ) {
-                              selectedWeather = items[i];
-
                               return WeatherWidget(
                                 weather: items[i],
                               );
                             }),
                           ),
                         ),
-                        ForecastWidget()
+                        const ForecastWidget()
                       ],
                     );
                   }
@@ -195,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _fecchWeatherWithLocation() async {
+  _fetchWeatherWithLocation() async {
     try {
       final position = await GeoLocatorHelper.determinePosition();
 

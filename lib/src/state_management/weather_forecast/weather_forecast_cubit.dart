@@ -12,7 +12,10 @@ class WeatherForecastCubit extends Cubit<WeatherForecastState> {
 
   getForecast(String cityName) async {
     emit(WeatherForecastLoading());
-    final weathers = await _weatherService.getForecast(cityName);
+    final weathers =
+        await _weatherService.getForecast(cityName).catchError((e) {
+      emit(WeatherForecastError());
+    });
     emit(WeatherForecastSuccess(weathers));
   }
 }

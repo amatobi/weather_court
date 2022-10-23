@@ -16,4 +16,5 @@ const WeatherForecastSuccess(this.weathers);
     @override
   List<Object> get props => [];
 }
+class WeatherForecastError extends WeatherForecastState {}
 

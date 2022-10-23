@@ -2,7 +2,9 @@ import '../../models/weather.dart';
 
 abstract class IDatasource {
 
-  Future addWeatherData(Weather weather);
+  Future<void> addWeatherData(Weather weather);
+  Future<void> addMultipleWeatherData(List<Weather> weathers);
+
   Future<void> updateWeatherData(Weather weather);
   Future<List<Weather>> fetchWeatherData();
 

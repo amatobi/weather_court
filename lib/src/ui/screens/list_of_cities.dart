@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:weathercourt/src/config/constants.dart';
 import 'package:weathercourt/src/state_management/weather/weather_bloc.dart';
+import 'package:weathercourt/src/ui/widgets/shared/components.dart';
 import '../../helper/city_helper.dart';
 import '../../state_management/local_weather_b/local_weather_bloc.dart';
 import '../../theme/colors.dart';
@@ -42,47 +43,67 @@ class AllCities extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: size.height * 0.05),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        backButton(context),
+                      ],
+                    ),
+                    SizedBox(height: size.height * 0.05),
                     //watch list
                     BlocBuilder<LocalWeatherBloc, LocalWeatherState>(
                       builder: (context, state) {
                         if (state is LocalWeatherFetched) {
-                          return Column(
-                            // mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Watch list',
-                                style: TextStyle(color: white),
-                              ),
-                              ...state.weathers.map((e) {
-                                return ListTile(
-                                  title: Text(e.cityName!, style: const TextStyle(color: white, fontWeight: FontWeight.bold),),
-                                  subtitle: Text('${e.description!} '),
-                                  trailing: IconButton(
-                                    onPressed: () {
-                                      getIt
-                                          .get<LocalWeatherBloc>()
-                                          .add(DeleteLocalWeather(e));
-                                    },
-                                    icon: SvgPicture.asset(
-                                      Constants.deleteIcon,
-                                      color: white,
+                          return state.weathers.isEmpty
+                              ? const SizedBox.shrink()
+                              : Column(
+                                  // mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Watch list',
+                                      style: TextStyle(color: white),
                                     ),
-                                  ),
+                                    ...state.weathers.map((e) {
+                                      return ListTile(
+                                        title: Text(
+                                          e.cityName!,
+                                          style: const TextStyle(
+                                              color: white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        subtitle: Text(
+                                          '${e.description!} ',
+                                          style: const TextStyle(color: white),
+                                        ),
+                                        trailing: IconButton(
+                                          onPressed: () {
+                                            getIt
+                                                .get<LocalWeatherBloc>()
+                                                .add(DeleteLocalWeather(e));
+                                          },
+                                          icon: SvgPicture.asset(
+                                            Constants.deleteIcon,
+                                            color: white,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    const Divider(),
+                                  ],
                                 );
-                              }).toList(), 
-                                const Divider(),
-                            ],
-                          );
                         }
                         return const SizedBox.shrink();
                       },
                     ),
-                  
+
                     //all cities
                     const Text(
                       'Available cities (Tap  to add to Watch List)',
-                      style: TextStyle(color: white, fontWeight: FontWeight.w900, fontSize: 18),
+                      style: TextStyle(
+                          color: white,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 18),
                     ),
                     ...CityHelper.citiesModeled().map((e) {
                       return ClipRRect(
@@ -103,12 +124,23 @@ class AllCities extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                    SvgPicture.asset(Constants.locationIcon, color: white, width: 20,),
-                                    Text(e.cityName!, style:  TextStyle(color: white.withOpacity(0.8), fontWeight: FontWeight.bold, fontSize: 16)),
+                                    SvgPicture.asset(
+                                      Constants.locationIcon,
+                                      color: white,
+                                      width: 20,
+                                    ),
+                                    Text(e.cityName!,
+                                        style: TextStyle(
+                                            color: white.withOpacity(0.8),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16)),
                                   ],
                                 ),
                                 SizedBox(height: size.width * 0.01),
-                                Text('${e.cityName}, ${e.country}', style: const TextStyle(color: white, fontWeight: FontWeight.normal)),
+                                Text('${e.cityName}, ${e.country}',
+                                    style: const TextStyle(
+                                        color: white,
+                                        fontWeight: FontWeight.normal)),
                               ],
                             ),
                           ),
