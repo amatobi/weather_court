@@ -6,7 +6,7 @@ import 'composition_root.dart';
 import 'src/config/app_config.dart';
 
 ///This is the development flavour of the project, run like so 
-///flutter run --flavor prodEnv -t lib/main_prod.dart
+///flutter run --flavor prod -t lib/main_prod.dart
 
 
 Future<void> main() async{
