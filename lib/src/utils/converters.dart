@@ -16,9 +16,9 @@ intToDouble(dynamic val) {
 @HiveType(typeId: 3)
 enum TemperatureUnit {
    @HiveField(0)
-  kelvin,
+   celsius,
    @HiveField(1)
-  celsius,
+   kelvin,
    @HiveField(2)
 
   fahrenheit

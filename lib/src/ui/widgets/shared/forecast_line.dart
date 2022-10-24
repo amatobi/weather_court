@@ -16,7 +16,6 @@ class ForecastLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final getIt = GetIt.I;
     return SizedBox(
       width: size.width,
       height: size.width * 0.487,
