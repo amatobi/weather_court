@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -32,32 +32,32 @@ enum WeatherType {
 class Weather extends HiveObject {
   @HiveField(0)
   int? id;
-   @HiveField(1)
+  @HiveField(1)
   int? time;
-   @HiveField(2)
+  @HiveField(2)
   int? sunrise;
-   @HiveField(3)
+  @HiveField(3)
   int? sunset;
-   @HiveField(4)
+  @HiveField(4)
   int? humidity;
-   @HiveField(5)
+  @HiveField(5)
   String? description;
-   @HiveField(6)
+  @HiveField(6)
   String? iconCode;
-   @HiveField(7)
+  @HiveField(7)
   String? main;
-   @HiveField(8)
+  @HiveField(8)
   String? cityName;
-   @HiveField(9)
+  @HiveField(9)
   double? windSpeed;
-   @HiveField(10)
+  @HiveField(10)
   Temperature? temperature;
-   @HiveField(11)
+  @HiveField(11)
   Temperature? maxTemperature;
-   @HiveField(12)
+  @HiveField(12)
   Temperature? minTemperature;
   @HiveField(13)
-  List<Weather>? forecast;
+  List<Weather>? forecast = [];
 
   Weather(
       {this.id,
@@ -75,9 +75,9 @@ class Weather extends HiveObject {
       this.minTemperature,
       this.forecast});
 
-      factory Weather.empty(){
-        return Weather();
-      }
+  factory Weather.empty() {
+    return Weather();
+  }
 
   static Weather fromJson(Map<String, dynamic> json) {
     final weather = json['weather'][0];
@@ -239,7 +239,20 @@ class Weather extends HiveObject {
       temperature: Temperature(hive['temperature']),
       maxTemperature: Temperature(hive['maxTemperature']),
       minTemperature: Temperature(hive['minTemperature']),
-      //forecast:  List<Weather>.from(hive['forecast']), 
+      //forecast:  List<Weather>.from(hive['forecast']),
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Weather &&
+          runtimeType == other.runtimeType &&
+          key == other.key &&
+          id == other.id &&
+          cityName == other.cityName &&
+          listEquals(forecast, other.forecast);
+
+  @override
+  int get hashCode => cityName.hashCode;
 }

@@ -21,6 +21,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final getIt = GetIt.instance;
+  late LocalWeatherBloc _localWeatherBloc;
 
   @override
   void initState() {
@@ -30,21 +31,24 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   initialize() async {
-    getIt.get<InternetConnectionCubit>().checkConnection();   
+    getIt.get<InternetConnectionCubit>().checkConnection();
+    _localWeatherBloc = getIt.get<LocalWeatherBloc>();
 
     Future.delayed(const Duration(seconds: 5), () {
-       if (getIt.get<Onboard>().isNewUser()) {
-      navigate(const Onboarding());
-    } else {
-      navigate(const HomeScreen());
-      getIt.get<TemperatureUnitCubit>().getTemperatureUnit();
+      if (getIt.get<Onboard>().isNewUser()) {
+        navigate(const Onboarding());
+      } else {
+        navigate(const HomeScreen());
+        getIt.get<TemperatureUnitCubit>().getTemperatureUnit();
 
-      getIt.get<LocalWeatherBloc>().add(FetchLocalWeather());
-    }
+        _localWeatherBloc.add(FetchLocalWeather());
+         
+      }
     });
   }
 
   
+
   navigate(Widget child) {
     Navigator.pushAndRemoveUntil(
         context,

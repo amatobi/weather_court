@@ -34,6 +34,7 @@ class WeatherService implements IWeatherservice {
 
     if (response.statusCode != 200) {
       throw HTTPException(response.statusCode, "Failed to get weather data");
+      
     }
 
     final weatherJson = json.decode(response.body);

@@ -60,6 +60,14 @@ class _HomeScreenState extends State<HomeScreen> {
         loadingDialog(context: context);
       }
     });
+     _updateOnLocalWeather();
+  }
+
+  _updateOnLocalWeather() {
+    final state = _localWeatherBloc.state;
+    if (state is LocalWeatherFetched) {
+      _localWeatherBloc.add(RefreshLocalWeather(state.weathers.last));
+    }
   }
 
   navigate(Widget child) {
@@ -345,9 +353,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                       WeatherWidget(
                                         weather: items[i],
                                       ),
-                                      ForecastWidget(
-                                        weathers: items[i].forecast!,
-                                      )
+                                      items[i].forecast != null
+                                          ? ForecastWidget(
+                                              weathers: items[i].forecast!,
+                                            )
+                                          : Column(
+                                              children: [
+                                                SizedBox(
+                                                    height: size.width * 0.3),
+                                                circularProgress(
+                                                    size.width * 0.06, 2),
+                                              ],
+                                            )
                                     ],
                                   );
                                 }),

@@ -39,8 +39,11 @@ class CompositionRoot {
     _weatherHelper = WeatherHelper(weatherservice: _weatherservice);
     // final directory = await getApplicationDocumentsDirectory();
     final box = await Hive.openBox<Weather>('weather');
+    // box.clear();
+    // Hive.deleteBoxFromDisk('weather');
 
     _pref = await SharedPreferences.getInstance();
+    // _pref.clear();
     _datasource = HiveDatasource(box);
     _viewModel = WeatherViewModel(_datasource);
     _localCache = LocalCache(_pref);
