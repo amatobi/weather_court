@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:weathercourt/src/theme/colors.dart';
 
 import '../../../models/weather.dart';
 import '../../../state_management/temperature_unit/temperature_unit_cubit.dart';
+import '../../../utils/converters.dart';
 import 'value_tile.dart';
 
 class ForecastLine extends StatelessWidget {
@@ -17,7 +19,7 @@ class ForecastLine extends StatelessWidget {
     final getIt = GetIt.I;
     return SizedBox(
       width: size.width,
-      height: size.width * 0.487, 
+      height: size.width * 0.487,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
@@ -32,12 +34,16 @@ class ForecastLine extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: Center(
-                child: ValueTile(
-              DateFormat('E, ha')
-                  .format(DateTime.fromMillisecondsSinceEpoch(item.time! * 1000)),
-              '${item.temperature!.as(getIt.get<TemperatureUnitCubit>().state).round()}°',
-              textColor: black,
-              iconData: item.getIconData(),
+                child: BlocBuilder<TemperatureUnitCubit, TemperatureUnit>(
+              builder: (context, unit) {
+                return ValueTile(
+                  DateFormat('E, ha').format(
+                      DateTime.fromMillisecondsSinceEpoch(item.time! * 1000)),
+                  '${item.temperature!.as(unit).round()}°',
+                  textColor: black,
+                  iconData: item.getIconData(),
+                );
+              },
             )),
           );
         },
