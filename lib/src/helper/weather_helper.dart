@@ -9,15 +9,12 @@ class WeatherHelper {
 
   Future<Weather> getWeather(String? cityName,
       {double? latitude, double? longitude}) async {
-       
-        
     try {
       cityName ??= await weatherservice.getCityNameFromLocation(
           latitude: latitude!, longitude: longitude!);
       Weather weather = await weatherservice.getWeatherData(cityName);
       List<Weather> weathers = await weatherservice.getForecast(cityName);
-      List<Weather> tempList = [...weathers];
-      weather.forecast = tempList;
+      weather.forecast = weathers;
       return weather;
     } catch (e) {
       errorToast('Failed to get weather');
